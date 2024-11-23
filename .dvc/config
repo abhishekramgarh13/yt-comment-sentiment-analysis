@@ -1,0 +1,4 @@
+[core]
+    remote = yt_remote
+['remote "yt_remote"']
+    url = ../UsersHPAppDataLocalTemp

@@ -1,4 +1,4 @@
 [core]
-    remote = yt_remote
-['remote "yt_remote"']
-    url = ../UsersHPAppDataLocalTemp
+    remote = myremote
+['remote "myremote"']
+    url = s3://ytsentimentdvcbucket

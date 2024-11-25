@@ -169,8 +169,8 @@ def main():
             mlflow.sklearn.log_model(model, "lgbm_model")
             mlflow.log_artifact(os.path.join(root_dir, 'tfidf_vectorizer.pkl'))
 
-            artifact_uri = mlflow.get_artifact_uri()
-            model_path = f"{artifact_uri}/lgbm_model"
+            
+            model_path = "lgbm_model"
 
             # save model info
             save_model_info(run.info.run_id, model_path, "experiment_info.json")

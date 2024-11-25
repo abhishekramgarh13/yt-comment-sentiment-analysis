@@ -61,7 +61,7 @@ def main():
         model_info_path = 'experiment_info.json'
         model_info = load_model_info(model_info_path)
         
-        model_name = "yt_sentiment_model"
+        model_name = "sentiment_analysis_model"
         register_model(model_name, model_info)
     except Exception as e:
         logger.error('Failed to complete the model registration process: %s', e)

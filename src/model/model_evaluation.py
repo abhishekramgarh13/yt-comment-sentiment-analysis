@@ -10,7 +10,7 @@ import mlflow.sklearn
 import yaml
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import json
 
 # logging configuration
 logger = logging.getLogger('model_evaluation')
@@ -90,7 +90,7 @@ def evaluate_model(model, X: np.ndarray, y: np.ndarray, dataset_name: str):
     """Evaluate the model and print the classification report."""
     try:
         y_pred = model.predict(X)
-        report = classification_report(y, y_pred, digits=4)
+        report = classification_report(y, y_pred,output_dict=True)
         cm = confusion_matrix(y, y_pred)
         logger.debug(f"Classification report for {dataset_name}:\n{report}")
         
@@ -121,13 +121,30 @@ def get_root_directory() -> str:
     return os.path.abspath(os.path.join(current_dir, '../../'))
 
 
+def save_model_info(run_id: str, model_path: str, file_path: str):
+    """save model run_id and model path to json file."""
+    try:
+        # creating dict to save model info
+        model_info={
+            "run_id" : run_id,
+            "model_path": model_path
+        }
+        # saving model info to jdon file
+        with open(file_path,'w') as file:
+            json.dump(model_info,file, indent=4)
+        logger.debug(f"model info is save at: {file_path}")
+    except Exception as e:
+        logger.error(f"error occured during model info saving: {e}")
+        raise 
+
+
 def main():
 
     mlflow.set_tracking_uri("http://ec2-3-107-174-141.ap-southeast-2.compute.amazonaws.com:5000/")
 
     mlflow.set_experiment('dvc-pipeline-runs')
 
-    with mlflow.start_run():
+    with mlflow.start_run() as run:
         try:
             # Get root directory
             root_dir = get_root_directory()
@@ -151,6 +168,12 @@ def main():
             # Log model and vectorizer
             mlflow.sklearn.log_model(model, "lgbm_model")
             mlflow.log_artifact(os.path.join(root_dir, 'tfidf_vectorizer.pkl'))
+
+            artifact_uri = mlflow.get_artifact_uri()
+            model_path = f"{artifact_uri}/lgbm_model"
+
+            # save model info
+            save_model_info(run.info.run_id, model_path, "experiment_info.json")
 
 
             # Load the training data and test data from the interim directory

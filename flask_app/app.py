@@ -23,7 +23,11 @@ from langchain.prompts import PromptTemplate
 from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
+groq_api_key = os.getenv("GROQ_API_KEY")
 
 
 app = Flask(__name__)
@@ -59,7 +63,7 @@ def preprocess_comment(comment):
         return comment
     
 def summarize(comments):
-    groq_api_key = "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"
+    
     llm = ChatGroq(model="llama3-8b-8192",groq_api_key=groq_api_key)
     
     try:

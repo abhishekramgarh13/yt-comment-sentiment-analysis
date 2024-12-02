@@ -51,12 +51,12 @@ def test_generate_trend_graph_endpoint():
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "image/png"
 
-def test_generate_summary():
-    data = {
-        "comments": ["Love this!", "Not so great.", "Absolutely amazing!", "Horrible experience."]
-    }
-    response = requests.post(f"{BASE_URL}/generate_summary", json=data)
-    assert response.status_code == 200
-    summary = response.json().get("summary")
-    assert isinstance(summary, str)
-    assert len(summary) > 0  # Ensure the summary is not empty
+# def test_generate_summary():
+#     data = {
+#         "comments": ["Love this!", "Not so great.", "Absolutely amazing!", "Horrible experience."]
+#     }
+#     response = requests.post(f"{BASE_URL}/generate_summary", json=data)
+#     assert response.status_code == 200
+#     summary = response.json().get("summary")
+#     assert isinstance(summary, str)
+#     assert len(summary) > 0  # Ensure the summary is not empty

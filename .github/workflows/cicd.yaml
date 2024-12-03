@@ -35,6 +35,9 @@ jobs:
         run: |
           dvc repro
 
+      - name: Wait for Flask server
+        run: sleep 30
+
       - name: Push DVC-tracked data to remote
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

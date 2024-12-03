@@ -101,19 +101,17 @@ def summarize(comments):
 
     
 # Load the model and vectorizer from the model registry and local storage
-def load_model_and_vectorizer(model_name, vectorizer_path):
+def load_model_and_vectorizer(model_name, model_version, vectorizer_path):
     # Set MLflow tracking URI to your server
     mlflow.set_tracking_uri("http://ec2-3-107-174-141.ap-southeast-2.compute.amazonaws.com:5000/") 
     client = MlflowClient()
-    latest_version_info = client.get_latest_versions(model_name, stages=["Production"])
-    model_version = latest_version_info[0].version
     model_uri = f"models:/{model_name}/{model_version}"
     model = mlflow.pyfunc.load_model(model_uri)
     vectorizer = joblib.load(vectorizer_path)  # Load the vectorizer
     return model, vectorizer
 
 # Initialize the model and vectorizer
-model, vectorizer = load_model_and_vectorizer("sentiment_analysis_model", "./tfidf_vectorizer.pkl")  # Update paths and versions as needed
+model, vectorizer = load_model_and_vectorizer("sentiment_analysis_model", "1", "./tfidf_vectorizer.pkl")  # Update paths and versions as needed
 
 
 @app.route('/predict_with_timestamps', methods=['POST'])

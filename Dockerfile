@@ -14,7 +14,6 @@ COPY tfidf_vectorizer.pkl /app/tfidf_vectorizer.pkl
 RUN pip install --no-cache-dir --target=/app/dependencies -r requirements.txt
 
 # Download NLTK data
-RUN python -m nltk.downloader stopwords wordnet
 
 
 FROM python:3.10-slim as final
@@ -29,6 +28,7 @@ COPY --from=build /app/dependencies /usr/local/lib/python3.10/site-packages/
 COPY flask_app/ /app/
 COPY tfidf_vectorizer.pkl /app/tfidf_vectorizer.pkl
 
+RUN python -m nltk.downloader stopwords wordnet
 
 EXPOSE 5000
 

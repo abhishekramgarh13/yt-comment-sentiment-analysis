@@ -2,15 +2,11 @@ FROM python:3.10 AS builder
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y libgomp1
-
 COPY flask_app/ /app/
 
 COPY tfidf_vectorizer.pkl /app/tfidf_vectorizer.pkl
 
 RUN pip install -r requirements.txt
-
-RUN python -m nltk.downloader stopwords wordnet
 
 FROM python:3.10-slim
 
@@ -19,6 +15,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y libgomp1
 
 RUN pip install gunicorn
+
+RUN python -m nltk.downloader stopwords wordnet
 
 COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
 

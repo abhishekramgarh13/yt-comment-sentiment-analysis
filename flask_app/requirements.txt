@@ -15,5 +15,6 @@ pandas==2.2.3
 python-dotenv==1.0.1
 transformers==4.46.3
 wordcloud==1.9.3
+scikit-learn
 
 

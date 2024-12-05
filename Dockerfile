@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.10 AS builder
 
 WORKDIR /app
 
@@ -11,6 +11,16 @@ COPY tfidf_vectorizer.pkl /app/tfidf_vectorizer.pkl
 RUN pip install -r requirements.txt
 
 RUN python -m nltk.downloader stopwords wordnet
+
+FROM python:3.10-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y libgomp1
+
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+
+COPY --from=builder /app /app
 
 EXPOSE 5000
 

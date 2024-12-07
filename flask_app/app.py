@@ -110,7 +110,12 @@ def load_model_and_vectorizer(model_name, model_version, vectorizer_path):
     return model, vectorizer
 
 # Initialize the model and vectorizer
-model, vectorizer = load_model_and_vectorizer("sentiment_analysis_model", "1", "./tfidf_vectorizer.pkl")  # Update paths and versions as needed
+model, vectorizer = load_model_and_vectorizer("sentiment_analysis_model", "2", "./tfidf_vectorizer.pkl")  # Update paths and versions as needed
+
+@app.route('/')
+def home():
+    return "Welcome to our flask api"
+
 
 
 @app.route('/predict_with_timestamps', methods=['POST'])

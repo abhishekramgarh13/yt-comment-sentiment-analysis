@@ -20,6 +20,6 @@ if [ "$(docker ps -aq -f name=yt-chrome-app)" ]; then
 fi
 
 echo "Starting new container..."
-docker run -d -p 80:5000 --name yt-chrome-app -e GROQ_API_KEY=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 225989338339.dkr.ecr.ap-southeast-2.amazonaws.com/yt-chrome-plugin:latest
+docker run -d -p 80:5000 -e GROQ_API_KEY=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 --name yt-chrome-app  225989338339.dkr.ecr.ap-southeast-2.amazonaws.com/yt-chrome-plugin:latest
 
 echo "Container started successfully."

@@ -1,6 +1,8 @@
-FROM python:3.10 AS builder
+FROM python:3.10-slim
 
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y libgomp1
 
 COPY flask_app/ /app/
 
@@ -10,25 +12,6 @@ RUN pip install -r requirements.txt
 
 RUN python -m nltk.downloader stopwords wordnet
 
-FROM python:3.10-slim
-
-WORKDIR /app
-
-RUN apt-get update && apt-get install -y libgomp1
-
-RUN pip install gunicorn
-
-
-
-COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
-
-COPY --from=builder /app /app
-
-RUN python -m nltk.downloader stopwords wordnet
-
 EXPOSE 5000
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
-
-
-
+CMD ["python", "app.py"]
